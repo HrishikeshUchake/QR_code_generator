@@ -1,0 +1,24 @@
+{
+  "name": "qr-code-generator",
+  "version": "0.0.1",
+  "private": true,
+  "homepage": "https://HrishikeshUchake.github.io/QR_code_generator",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.6.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "gh-pages": "^4.0.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
+    "vite": "^4.0.0"
+  }
+}
