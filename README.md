@@ -8,7 +8,7 @@ Live here → [https://HrishikeshUchake.github.io/QR_code_generator](https://Hri
 
 ---
 
-## ⚡ Features
+## Features
 
 - Type anything → get a QR code.
 - Looks decent thanks to Tailwind.
