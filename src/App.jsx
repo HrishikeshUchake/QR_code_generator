@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 export default function App() {
   const [input, setInput] = useState('');
   const [qrUrl, setQrUrl] = useState('');
+  const qrRef = useRef(null);
 
   const generateQr = () => {
     if (!input.trim()) return;
@@ -11,30 +12,60 @@ export default function App() {
     setQrUrl(url);
   };
 
+  const downloadQr = async () => {
+    if (!qrUrl) return;
+
+    const response = await fetch(qrUrl);
+    const blob = await response.blob();
+    const urlObject = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = urlObject;
+    link.download = 'qr-code.png';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(urlObject);
+  };
+
   return (
-    <div className="flex flex-col items-center p-4">
-      <h1 className="text-3xl font-bold mb-6">QR Code Generator</h1>
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-blue-100 flex items-center justify-center px-4">
+      <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md w-full text-center space-y-6">
+        <h1 className="text-3xl font-bold text-blue-600">QR Code Generator</h1>
 
-      <input
-        type="text"
-        value={input}
-        onChange={e => setInput(e.target.value)}
-        placeholder="Enter text or URL"
-        className="w-80 p-2 border rounded mb-4 focus:outline-none focus:ring"
-      />
+        <input
+          type="text"
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          placeholder="Enter text or URL"
+          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
 
-      <button
-        onClick={generateQr}
-        className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded mb-6"
-      >
-        Generate
-      </button>
+        <button
+          onClick={generateQr}
+          className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"
+        >
+          Generate QR Code
+        </button>
 
-      {qrUrl && (
-        <div className="shadow-lg p-4 bg-white rounded">
-          <img src={qrUrl} alt="QR Code" />
-        </div>
-      )}
+        {qrUrl && (
+          <div className="space-y-4">
+            <img
+              ref={qrRef}
+              src={qrUrl}
+              alt="Generated QR"
+              className="mx-auto border-4 border-gray-200 rounded"
+            />
+
+            <button
+              onClick={downloadQr}
+              className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition"
+            >
+              Download QR Code
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
